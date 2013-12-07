@@ -6,9 +6,9 @@ class Api::TimelineController < ApplicationController
   before_filter :client
   def interval
     collected_tweets = {}
-		timeout_in_seconds = 1
+		timeout_in_seconds = 3
 		loop_count = 0
-		interval = params[:interval] || 10
+		interval = params[:interval] || 4
 		loop_time = Time.now
 		while loop_count < interval
 		  begin
@@ -16,7 +16,7 @@ class Api::TimelineController < ApplicationController
 		  	loop_time = Time.now
 		    Timeout::timeout(timeout_in_seconds) do
 		      @twitter_streaming_client.filter(:track => "gaga") do |tweet|
-		      	puts "#{tweet.text}"
+		      	#puts "#{tweet.text}"
 		      	tweet_count = tweet_count + 1
 		      	collected_tweets["#{loop_time}"] = tweet_count
 		      end
@@ -24,7 +24,7 @@ class Api::TimelineController < ApplicationController
 		  rescue Timeout::Error
 		  	collected_tweets["#{loop_time}"] = tweet_count
 		  	loop_count = loop_count + 1
-		  	puts "loop count: #{loop_count}, #{Time.now}"
+		  	#puts "loop count: #{loop_count}, #{Time.now}"
 		    next
 		  end
 		end
