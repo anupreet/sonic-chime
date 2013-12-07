@@ -5,7 +5,7 @@ require 'twitter'
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(:default, Rails.env)
-TWITTER_CONFIG = YAML.load(File.read(File.expand_path('twitter.yml', __FILE__)))
+TWITTER_CONFIG = YAML.load(File.read(File.expand_path('../twitter.yml', __FILE__)))
 
 module SonicChimes
   class Application < Rails::Application
