@@ -3,6 +3,8 @@ require 'twitter_config'
 require 'timeout'
 
 class Api::TimelineController < ApplicationController
+	after_filter :set_access_control_headers
+
   before_filter :client
   def interval
     collected_tweets = {}
@@ -47,7 +49,14 @@ class Api::TimelineController < ApplicationController
   end
 
   private
+  
+	def set_access_control_headers
+		headers['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept'
+		headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, DELETE, OPTIONS'
+		headers['Access-Control-Allow-Origin'] = '*'
+		headers['Access-Control-Request-Method'] = '*'
 
+	end
   def client
     @twitter_client = Twitter::REST::Client.new do |config|
       config.consumer_key        = ENV['CONSUMER_KEY']
