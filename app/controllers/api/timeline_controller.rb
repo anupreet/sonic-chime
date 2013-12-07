@@ -32,8 +32,8 @@ class Api::TimelineController < ApplicationController
   end
 
   def heatmap
-  	geocode = params[:geocode] || "37.776617,-122.417114,500mi"
-  	results = @twitter_client.search("gaga", {:geocode => geocode, :count => 100})
+  	geocode = params[:geocode] || "37.776617,-122.417114,5000mi"
+  	results = @twitter_client.search("chimeforchange", {:geocode => geocode, :count => 100})
   	geo_coordinates = results.map(&:geo)
   	geo_coordinates.reject! { |g| g.nil? }
   	coordinates = geo_coordinates.map(&:coordinates)
