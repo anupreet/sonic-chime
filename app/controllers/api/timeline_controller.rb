@@ -6,9 +6,9 @@ class Api::TimelineController < ApplicationController
   before_filter :client
   def interval
     collected_tweets = {}
-		timeout_in_seconds = 3
+		timeout_in_seconds = 1
 		loop_count = 0
-		interval = params[:interval] || 4
+		interval = params[:interval] || 10
 		loop_time = Time.now
 		while loop_count < interval
 		  begin
@@ -40,16 +40,16 @@ class Api::TimelineController < ApplicationController
 
   def client
     @twitter_client = Twitter::REST::Client.new do |config|
-      config.consumer_key        = TwitterConfig['consumer_key']
-      config.consumer_secret     = TwitterConfig['consumer_secret']
-      config.access_token        = TwitterConfig['access_token']
-      config.access_token_secret = TwitterConfig['access_token_secret']
+      config.consumer_key        = ENV['CONSUMER_KEY']
+      config.consumer_secret     = ENV['CONSUMER_SECRET']
+      config.access_token        = ENV['ACCESS_TOKEN']
+      config.access_token_secret = ENV['ACCESS_TOKEN_SECRET']
     end
     @twitter_streaming_client = Twitter::Streaming::Client.new do |config|
-      config.consumer_key        = TwitterConfig['consumer_key']
-      config.consumer_secret     = TwitterConfig['consumer_secret']
-      config.access_token        = TwitterConfig['access_token']
-      config.access_token_secret = TwitterConfig['access_token_secret']
+      config.consumer_key        = ENV['CONSUMER_KEY']
+      config.consumer_secret     = ENV['CONSUMER_SECRET']
+      config.access_token        = ENV['ACCESS_TOKEN']
+      config.access_token_secret = ENV['ACCESS_TOKEN_SECRET']
     end
   end
 
