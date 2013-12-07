@@ -31,9 +31,19 @@ class Api::TimelineController < ApplicationController
     render :json => collected_tweets
   end
 
-  def heat_map
-  	results = @twitter_client.search("gaga")
-  	binding.pry
+  def heatmap
+  	geocode = params[:geocode] || "37.776617,-122.417114,500mi"
+  	results = @twitter_client.search("gaga", {:geocode => geocode, :count => 100})
+  	geo_coordinates = results.map(&:geo)
+  	geo_coordinates.reject! { |g| g.nil? }
+  	coordinates = geo_coordinates.map(&:coordinates)
+  	#binding.pry
+  	places = results.map(&:place)
+  	places.reject! { |p| p.nil? }
+  	boundaries = places.map(&:bounding_box)
+  	# TODO figure out how to get center
+  	coordinates.zip(boundaries.map(&:coordinates)).flatten.compact
+  	render :json => coordinates
   end
 
   private
@@ -51,6 +61,11 @@ class Api::TimelineController < ApplicationController
       config.access_token        = ENV['ACCESS_TOKEN']
       config.access_token_secret = ENV['ACCESS_TOKEN_SECRET']
     end
+  end
+
+  def find_center(bounding_box)
+  	coords = bounding_box.coordinates
+
   end
 
 end
