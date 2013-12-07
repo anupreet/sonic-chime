@@ -42,14 +42,19 @@ class Api::TimelineController < ApplicationController
   	#binding.pry
   	places = results.map(&:place)
   	places.reject! { |p| p.nil? }
-  	boundaries = places.map(&:bounding_box)
-  	# TODO figure out how to get center
-  	coordinates.zip(boundaries.map(&:coordinates)).flatten.compact
+  	unless places.empty? 
+  		boundaries = places.map(&:bounding_box)
+  		if boundaries
+	  		# TODO figure out how to get center
+	  		more_coords = boundaries.map(&:coordinates)
+	  		coordinates.zip(more_coords)#.flatten.compact if coordinates.present? && more_coords.present?
+	  	end
+  	end
   	render :json => coordinates
   end
 
   private
-  
+
 	def set_access_control_headers
 		headers['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept'
 		headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, DELETE, OPTIONS'
