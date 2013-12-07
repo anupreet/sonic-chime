@@ -1,7 +1,7 @@
 require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
-
+require 'twitter'
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(:default, Rails.env)
@@ -19,5 +19,12 @@ module SonicChimes
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
+
+    twitter_client = Twitter::REST::Client.new do |config|
+      config.consumer_key        = "YOUR_CONSUMER_KEY"
+      config.consumer_secret     = "YOUR_CONSUMER_SECRET"
+      config.access_token        = "YOUR_ACCESS_TOKEN"
+      config.access_token_secret = "YOUR_ACCESS_SECRET"
+    end
   end
 end
