@@ -1,0 +1,5 @@
+# Rename file to twitter.yml when using
+consumer_key: change_me
+consumer_secret: change_me
+access_token: change_me
+access_token_secret: change_me

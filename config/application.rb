@@ -5,6 +5,7 @@ require 'twitter'
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(:default, Rails.env)
+TWITTER_CONFIG = YAML.load(File.read(File.expand_path('twitter.yml', __FILE__)))
 
 module SonicChimes
   class Application < Rails::Application
@@ -21,10 +22,10 @@ module SonicChimes
     # config.i18n.default_locale = :de
 
     twitter_client = Twitter::REST::Client.new do |config|
-      config.consumer_key        = "YOUR_CONSUMER_KEY"
-      config.consumer_secret     = "YOUR_CONSUMER_SECRET"
-      config.access_token        = "YOUR_ACCESS_TOKEN"
-      config.access_token_secret = "YOUR_ACCESS_SECRET"
+      config.consumer_key        = TWITTER_CONFIG['consumer_key']
+      config.consumer_secret     = TWITTER_CONFIG['consumer_secret']
+      config.access_token        = TWITTER_CONFIG['access_token']
+      config.access_token_secret = TWITTER_CONFIG['access_token_secret']
     end
   end
 end
